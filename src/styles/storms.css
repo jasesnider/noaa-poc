@@ -1,4 +1,5 @@
-.search-input-wrapper {
+.search-input-wrapper,
+.loading-indicator {
   margin: 2rem auto;
 }
 

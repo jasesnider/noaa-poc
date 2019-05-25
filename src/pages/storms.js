@@ -17,6 +17,15 @@ class Storms extends Component {
     this.setState({ stormData, isLoading: false })
   }
 
+  renderDescription() {
+    return (
+      <div>
+        <div>This is pulling data from the NOAA historical storm records.</div>
+        <div>Search by typing in a year, ocean or name to get started</div>
+      </div>
+    )
+  }
+
   renderRecordList(filteredList) {
     return (
       <div>
@@ -77,9 +86,8 @@ class Storms extends Component {
       <Layout>
         <SEO title="Storms" />
         <h1>Storms</h1>
-        <div>This is pulling data from the NOAA historical storm records.</div>
-        <div> Search by typing in a year, ocean or name to get started</div>
-        {isLoading && <div>Loading... </div>}
+        {this.renderDescription()}
+        {isLoading && <div className="loading-indicator">Loading... </div>}
         <div className="search-input-wrapper">
           <input
             onChange={e => this.filterList(e)}
