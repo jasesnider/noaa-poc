@@ -1,7 +1,7 @@
 import axios from "axios"
 import { stormsBuilder } from "../builders"
 
-export const getStorms = self => {
+export const getStorms = setStormsToState => {
   return axios
     .get("https://cors.io/?https://www.nhc.noaa.gov/TCR_StormReportsIndex.xml")
     .then(function(response) {
@@ -9,7 +9,7 @@ export const getStorms = self => {
 
       if (data) {
         const storms = stormsBuilder(data)
-        self.setState({ stormData: storms })
+        setStormsToState(storms)
       }
     })
     .catch(function(error) {

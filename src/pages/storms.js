@@ -4,22 +4,58 @@ import { Link } from "gatsby"
 import Layout from "../components/layout"
 import SEO from "../components/seo"
 import { getStorms } from "../api/storms"
+import "../styles/storms.css"
 
 class Storms extends Component {
   state = {
     stormData: [],
     filteredList: [],
+    isLoading: true,
+  }
+
+  setStormsToState = stormData => {
+    this.setState({ stormData, isLoading: false })
+  }
+
+  renderRecordList(filteredList) {
+    return (
+      <div>
+        {filteredList &&
+          filteredList.map((storm, i) => {
+            const stormIndex = i
+            const { stormName, year, stormReportURL, basin } = storm
+            return (
+              <div className="record-wrapper" key={stormIndex}>
+                <div className="record-name">{stormName}</div>
+                <ul>
+                  <li>
+                    <a
+                      href={stormReportURL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {`${stormName} Report`}
+                    </a>
+                  </li>
+                  <li>{year}</li>
+                  <li>{basin}</li>
+                </ul>
+              </div>
+            )
+          })}
+      </div>
+    )
   }
 
   componentDidMount() {
-    getStorms(this)
+    getStorms(this.setStormsToState)
   }
 
-  filterList = e => {
+  filterList(e) {
     const value = e.target.value
     const { stormData } = this.state
 
-    let list
+    let list = stormData
 
     if (!!value) {
       list = stormData.filter(storm => {
@@ -35,36 +71,25 @@ class Storms extends Component {
   }
 
   render() {
-    const { filteredList } = this.state
+    const { filteredList, stormData, isLoading } = this.state
 
     return (
       <Layout>
         <SEO title="Storms" />
         <h1>Storms</h1>
-        <input onChange={e => this.filterList(e)} />
-        <ul>
-          {filteredList &&
-            filteredList.map((storm, i) => {
-              const stormIndex = i
-              const { stormName, year, stormReportURL, basin } = storm
-              return (
-                <React.Fragment key={stormIndex}>
-                  <li>{stormName}</li>
-                  <li>
-                    <a
-                      href={stormReportURL}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {`${stormName} Report`}
-                    </a>
-                  </li>
-                  <li>{year}</li>
-                  <li>{basin}</li>
-                </React.Fragment>
-              )
-            })}
-        </ul>
+        {isLoading && <div>Loading... </div>}
+        <div className="search-input-wrapper">
+          <input
+            onChange={e => this.filterList(e)}
+            placeholder={isLoading ? "Getting storm data" : "Search Storms"}
+            disabled={isLoading}
+          />
+          <span>
+            {` Found: ${filteredList.length} of ${stormData.length} records`}
+          </span>
+        </div>
+        {!isLoading && this.renderRecordList(filteredList)}
+
         <Link to="/">Go back to the homepage</Link>
       </Layout>
     )
