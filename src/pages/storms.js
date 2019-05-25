@@ -77,6 +77,8 @@ class Storms extends Component {
       <Layout>
         <SEO title="Storms" />
         <h1>Storms</h1>
+        <div>This is pulling data from the NOAA historical storm records.</div>
+        <div> Search by typing in a year, ocean or name to get started</div>
         {isLoading && <div>Loading... </div>}
         <div className="search-input-wrapper">
           <input
