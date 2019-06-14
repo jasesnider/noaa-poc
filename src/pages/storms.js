@@ -69,9 +69,9 @@ class Storms extends Component {
     if (!!value) {
       list = stormData.filter(storm => {
         const { year, basin, stormName, stormReportURL } = storm
-        const s = `${year}${basin}${stormName}${stormReportURL}`
+        const s = `${year}${basin}${stormName}${stormReportURL}`.toLowerCase()
 
-        return s.indexOf(value) > -1
+        return s.indexOf(value.toLowerCase()) > -1
       })
       this.setState({ filteredList: list })
     } else {

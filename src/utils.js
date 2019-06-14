@@ -24,5 +24,13 @@ export const XMLParserToJSON = (xml, iterator, names) => {
   for (let i = 0; i < nodes.length; i++) {
     parsedDataToJSON.push(buildCollectionItem(parsedXML, names, i))
   }
+
+  const date = new Date()
+  const year = date.getFullYear()
+  const month = date.getMonth()
+
+  localStorage.setItem("storms_date", `${year}:${month}`)
+  localStorage.setItem("storms_data", JSON.stringify(parsedDataToJSON))
+
   return parsedDataToJSON
 }
